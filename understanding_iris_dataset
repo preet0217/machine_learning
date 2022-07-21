@@ -1,0 +1,83 @@
+#Understanding the data
+
+from sklearn.datasets import load_iris
+
+iris_dataset=load_iris()
+
+print('Print keys of iris_dataset: \n',iris_dataset.keys())
+
+  '''Print keys of iris_dataset: 
+  dict_keys(['data', 'target', 'frame', 'target_names', 'DESCR', 'feature_names', 'filename'])'''
+print(iris_dataset['DESCR'][:200]+ "\n....")
+
+'''.. _iris_dataset:
+
+Iris plants dataset
+--------------------
+
+**Data Set Characteristics:**
+
+    :Number of Instances: 150 (50 in each of three classes)
+    :Number of Attributes: 4 numeric, predictive
+....
+'''
+
+print('target names to be predicted:',iris_dataset['target_names'])
+
+'''target names to be predicted: ['setosa' 'versicolor' 'virginica']'''
+
+print('Feature names: ',iris_dataset['feature_names'])
+'''Feature names:  ['sepal length (cm)', 'sepal width (cm)', 'petal length (cm)', 'petal width (cm)']'''
+
+iris_dataset['data'].shape
+'''(150, 4)'''
+
+iris_dataset['target']
+
+'''array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+       0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+       2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+       2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2])'''
+
+
+from sklearn.model_selection import train_test_split
+
+
+X_train,X_test,y_train,y_test=train_test_split(iris_dataset['data'],iris_dataset['target'],random_state=0) 
+#random_state is a pseudorandom number generator
+#X_train contains 75% of rows of dataset and X_test contains the remaining 25%. 
+
+
+print("X_train: ",X_train.shape, '\t y_train: ',y_train.shape)
+
+# X_train:  (112, 4)   y_train:  (112,)
+
+
+
+print("X_test: ",X_test.shape, '\t y_test: ',y_test.shape)
+
+# X_test:  (38, 4)     y_test:  (38,)
+
+#Its always good to inspect the data,its a good way to find abnormalities and peculiarities.
+#Maybe some irises were measured using inches and not centimeters.
+#In real world inconsistencies in data and unexpected measurements are common
+
+%matplotlib notebook 
+import matplotlib.pyplot as plt
+import pandas as pd
+import numpy as np
+import mglearn
+from IPython.display import display
+
+#Create dataframe from data in X_train,labels columns using iris_dataset.feature_names
+
+iris_dataframe=pd.DataFrame(X_train,columns=iris_dataset.feature_names)
+
+#Create a scatter matrix(to create a pair plot of features in training set)
+
+pd.plotting.scatter_matrix(iris_dataframe,c=y_train,figsize=(10,10),marker='o',hist_kwds={'bins':20},s=60,alpha=0.8,cmap=mglearn.cm3)
+
+
